@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ibu Desty Wali Kelas Tercinta - XI 3</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="icon/logo.png" type="image/png">
+</head>
+<body>
+
+  <!-- ============ AUDIO BACKGROUND ============ -->
+  <audio id="bg-music" src="audio/piano.mp3" loop></audio>
+  <button id="music-toggle" class="music-btn" aria-label="Toggle Music">🔊</button>
+
+  <!-- ============ 1. LOADING SCREEN ============ -->
+  <section id="loading-screen" class="screen active">
+    <div class="loading-content">
+      <p class="loading-text">Memuat Halaman...</p>
+      <div class="loading-bar-wrapper">
+        <div class="loading-bar" id="loading-bar"></div>
+      </div>
+      <p class="loading-percent" id="loading-percent">0%</p>
+    </div>
+  </section>
+
+  <!-- ============ 2. OPENING (AMPLOP) ============ -->
+  <section id="opening-screen" class="screen">
+    <div class="envelope-wrapper">
+      <p class="envelope-title">Untuk</p>
+      <h1 class="envelope-subtitle">Ibu Desty Muliani N, S.Pd.
+      </h1>
+      <span class="envelope-heart">❤️</span>
+
+      <div class="envelope" id="envelope">
+        <div class="envelope-flap"></div>
+        <div class="envelope-body"></div>
+        <div class="envelope-seal" id="envelope-seal">
+          <span class="seal-text">XI 3</span>
+        </div>
+        <div class="letter-inside" id="letter-inside"></div>
+      </div>
+
+      <p class="envelope-hint">Dari Kami Kelas XI 3</p>
+      <p class="envelope-hint">Klik segel untuk membuka</p>
+    </div>
+  </section>
+
+  <!-- ============ 3. SURAT PENDAHULUAN ============ -->
+  <section id="intro-letter-screen" class="screen">
+    <div class="paper intro-paper">
+      <div class="paper-date">Juli 2026</div>
+      <div class="paper-content">
+        <p>Assalamu'alaikum Wr. Wb.</p>
+        <p>Terima kasih, Bu.</p>
+        <p>
+          Melalui website sederhana ini, kami ingin mengucapkan terima kasih atas segala waktu, kesabaran, perhatian, dan bimbingan yang telah Ibu berikan kepada kami selama menjadi wali kelas XI 3.
+        </p>
+        <p>
+          Mungkin selama ini kami pernah membuat Ibu kesal, khawatir, atau bahkan lelah menghadapi tingkah kami. Untuk itu, kami juga ingin meminta maaf atas segala kesalahan yang pernah kami lakukan, baik yang disengaja maupun tidak disengaja. </p>
+          <p>Walaupun sekarang Ibu bukan lagi wali kelas kami, kami berharap tali silaturahmi ini tetap terjaga dan semua kenangan yang pernah kita ciptakan akan selalu menjadi bagian dari perjalanan kami.</p>
+          <P> Terima kasih atas semuanya, Bu. Semoga Ibu selalu diberikan kesehatan, kebahagiaan, dan keberkahan dalam setiap langkah.</P>
+        <p>Wassalamu'alaikum Wr. Wb.</p>
+        <p>Hormat kami, seluruh murid Kelas XI 3</p>
+        <p class="developer-info">
+          Website ini dibuat
+          dengan penuh rasa syukur
+          dan ketulusan
+          untuk Ibu Desty sang Wali Kelas.
+
+<p>Designed & Developed by</p>
+
+Adnan Sya'ban Mubarok
+</p>
+        <p class="heart">❤️</p>
+      </div>
+      <div class="school-stamp" id="school-stamp">
+        <img src="icon/logo.png" alt="Logo Sekolah">
+      </div>
+      <button id="start-reading-btn" class="btn-gold">Mulai Membaca</button>
+    </div>
+  </section>
+
+  <!-- ============ 4. HALAMAN PESAN MURID ============ -->
+  <section id="messages-screen" class="screen">
+    <div class="paper message-paper" id="message-paper">
+      <div class="paper-date">Juli 2026</div>
+
+      <div class="student-photo-wrap">
+        <img id="student-photo" src="img/01.jpg" alt="Foto Murid" class="student-photo">
+      </div>
+
+      <h2 class="student-name" id="student-name">Nama Murid</h2>
+      <p class="student-absen" id="student-absen">Absen 01</p>
+
+      <div class="student-message-wrap">
+        <p class="student-message" id="student-message">
+          Pesan dari murid akan tampil di sini.
+        </p>
+      </div>
+
+      <div class="progress-wrap">
+        <p class="progress-count"><span id="progress-current">1</span> / <span id="progress-total">36</span></p>
+        <p class="progress-hint" id="progress-hint">Sedang membaca pesan ke-1</p>
+      </div>
+
+      <div class="nav-buttons">
+        <button id="prev-btn" class="btn-outline" disabled>← Sebelumnya</button>
+        <button id="next-btn" class="btn-gold">Berikutnya →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 5. FOTO KELAS + TULISAN MUNCUL ============ -->
+  <section id="class-photo-screen" class="screen">
+    <div class="class-photo-wrapper">
+      <img src="img/kelas.jpg" alt="Foto Kelas" class="class-photo">
+      <div class="class-photo-overlay"></div>
+      <div class="fade-text-container" id="fade-text-container">
+        <p class="fade-line" data-line="0">Setiap pertemuan...</p>
+        <p class="fade-line" data-line="1">pasti ada perpisahan.</p>
+        <p class="fade-line" data-line="2">Namun semua kenangan...</p>
+        <p class="fade-line" data-line="3">akan selalu kami simpan.</p>
+        <p class="fade-line" data-line="4">Terima kasih, Bu.</p>
+        <p class="fade-line fade-heart" data-line="5">❤️</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 6. CREDIT ============ -->
+  <section id="credit-screen" class="screen">
+    <div class="credit-wrapper">
+      <div class="credit-scroll" id="credit-scroll">
+        <h2 class="credit-title">XI 3</h2>
+        <ul class="credit-list" id="credit-list">
+          <!-- Nama murid akan digenerate oleh script.js -->
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 7. PENUTUP ============ -->
+  <section id="closing-screen" class="screen">
+    <div class="closing-content">
+      <p class="closing-text">
+        Halaman ini memang selesai. Namun kenangan ibu akan selalu tersimpan di hati kami.
+        <br>Terima kasih atas segalanya, Bu.
+      </p>
+      <p class="closing-note">
+        "Tidak semua guru akan kami ingat.<br>
+        Namun kami yakin, kami akan selalu mengingat Ibu."
+      </p>
+      <span class="closing-heart">❤️</span>
+      <h2 class="closing-class">Kelas XI 3</h2>
+      <p class="closing-year">2026</p>
+
+      <p class="final-thanks">
+        Terima kasih telah membuka setiap halaman kenangan ini.
+      </p>
+
+      <button id="replay-btn" class="btn-outline replay-btn">↺ Baca Lagi</button>
+    </div>
+
+    <footer class="watermark">
+      <p>Designed &amp; Developed by</p>
+      <p class="watermark-name">Adnan Sya'ban Mubarok</p>
+    </footer>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,738 @@
+/* ============================================
+   RESET & BASE
+============================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --brown-dark: #2b1c14;
+  --brown-darker: #1a110b;
+  --cream: #f3e6d0;
+  --cream-dark: #e8d7b8;
+  --gold: #c9a24b;
+  --gold-light: #e0c375;
+  --gold-dark: #8a6a2f;
+  --text-dark: #3b2a1a;
+  --text-soft: #5c4630;
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.45);
+  --transition-slow: 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+  --transition-fast: 0.3s ease;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  background: var(--brown-dark);
+  font-family: 'Georgia', 'Times New Roman', serif;
+  color: var(--text-dark);
+}
+
+body {
+  position: relative;
+  background: radial-gradient(circle at center, #3a2717 0%, var(--brown-darker) 100%);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+/* ============================================
+   SCREEN MANAGEMENT
+============================================ */
+.screen {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  opacity: 0;
+  transition: opacity var(--transition-slow);
+  overflow: hidden;
+}
+
+.screen.active {
+  display: flex;
+  opacity: 1;
+  z-index: 10;
+}
+
+.screen.fade-out {
+  opacity: 0;
+}
+
+/* ============================================
+   MUSIC TOGGLE BUTTON
+============================================ */
+.music-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 999;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(201, 162, 75, 0.15);
+  border: 1px solid var(--gold);
+  color: var(--gold-light);
+  font-size: 18px;
+  backdrop-filter: blur(6px);
+  transition: var(--transition-fast);
+}
+
+.music-btn:hover {
+  background: rgba(201, 162, 75, 0.35);
+  transform: scale(1.1);
+}
+
+/* ============================================
+   1. LOADING SCREEN
+============================================ */
+#loading-screen {
+  background: var(--brown-darker);
+}
+
+.loading-content {
+  text-align: center;
+  color: var(--gold-light);
+}
+
+.loading-text {
+  font-size: 1.4rem;
+  letter-spacing: 2px;
+  margin-bottom: 24px;
+  font-style: italic;
+  opacity: 0.9;
+}
+
+.loading-bar-wrapper {
+  width: 260px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 0 auto;
+  border: 1px solid rgba(201, 162, 75, 0.3);
+}
+
+.loading-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold-light));
+  transition: width 0.3s ease;
+  box-shadow: 0 0 10px var(--gold-light);
+}
+
+.loading-percent {
+  margin-top: 14px;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  opacity: 0.7;
+}
+
+/* ============================================
+   2. OPENING - AMPLOP
+============================================ */
+.envelope-wrapper {
+  text-align: center;
+  animation: fadeIn 1.2s ease;
+}
+
+.envelope-title {
+  color: var(--cream-dark);
+  font-size: 1.2rem;
+  letter-spacing: 3px;
+  opacity: 0.85;
+}
+
+.envelope-subtitle {
+  color: var(--gold-light);
+  font-size: 2.2rem;
+  font-weight: 400;
+  margin: 6px 0 4px;
+  letter-spacing: 1px;
+}
+
+.envelope-heart {
+  display: inline-block;
+  font-size: 1.3rem;
+  margin-bottom: 30px;
+  animation: pulse 2s infinite;
+}
+
+.envelope {
+  position: relative;
+  width: 260px;
+  height: 170px;
+  margin: 0 auto 30px;
+}
+
+.envelope-body {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, var(--cream), var(--cream-dark));
+  border: 1px solid var(--gold-dark);
+  border-radius: 6px;
+  box-shadow: var(--shadow-soft);
+}
+
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  border-left: 130px solid transparent;
+  border-right: 130px solid transparent;
+  border-top: 90px solid var(--cream-dark);
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+  transform-origin: top center;
+  transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1);
+  z-index: 3;
+}
+
+.envelope.open .envelope-flap {
+  transform: rotateX(180deg);
+  z-index: 1;
+}
+
+.letter-inside {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%) translateY(0);
+  width: 200px;
+  height: 130px;
+  background: var(--cream);
+  border: 1px solid var(--gold-dark);
+  border-radius: 4px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+  z-index: 2;
+  transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1), opacity 1.2s ease;
+  opacity: 0;
+}
+
+.envelope.open .letter-inside {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-140px);
+}
+
+.envelope-seal {
+  position: absolute;
+  top: 68px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--gold-light), var(--gold-dark) 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.4), inset 0 0 8px rgba(255,255,255,0.3);
+  z-index: 4;
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.envelope-seal:hover {
+  transform: translateX(-50%) scale(1.08);
+  box-shadow: 0 0 20px var(--gold-light), inset 0 0 10px rgba(255,255,255,0.4);
+}
+
+.envelope-seal.cracked {
+  animation: crackSeal 0.5s forwards;
+}
+
+.seal-text {
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: var(--brown-darker);
+  letter-spacing: 1px;
+}
+
+.envelope-hint {
+  color: var(--cream-dark);
+  font-size: 0.9rem;
+  opacity: 0.7;
+  letter-spacing: 1px;
+  animation: pulse 2.5s infinite;
+}
+
+@keyframes crackSeal {
+  0% { transform: translateX(-50%) scale(1); opacity: 1; }
+  60% { transform: translateX(-50%) scale(1.15) rotate(8deg); opacity: 0.7; }
+  100% { transform: translateX(-50%) scale(0.3) rotate(25deg); opacity: 0; }
+}
+
+/* ============================================
+   PAPER / SURAT (Shared style)
+============================================ */
+.paper {
+  position: relative;
+  width: min(560px, 90vw);
+  max-height: 85vh;
+  overflow-y: auto;
+  background: var(--cream);
+  background-image:
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.015) 0px, transparent 1px, transparent 2px),
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,0.4), transparent 60%);
+  border: 1px solid var(--gold-dark);
+  border-radius: 4px;
+  padding: 40px 36px 32px;
+  box-shadow: var(--shadow-soft), inset 0 0 40px rgba(139, 106, 47, 0.08);
+  animation: fadeInUp 0.9s ease;
+}
+
+.paper-date {
+  position: absolute;
+  top: 16px;
+  right: 22px;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.paper-content p {
+  margin-bottom: 16px;
+  line-height: 1.7;
+  color: var(--text-dark);
+  font-size: 1rem;
+}
+
+.school-stamp {
+  width: 70px;
+  height: 70px;
+  margin: 20px auto 10px;
+  opacity: 0.1;
+}
+
+.school-stamp img {
+  width: 100%;
+  filter: grayscale(1);
+}
+
+.btn-gold {
+  display: block;
+  margin: 24px auto 0;
+  padding: 12px 32px;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold-dark));
+  color: var(--brown-darker);
+  font-weight: bold;
+  border-radius: 30px;
+  letter-spacing: 1px;
+  box-shadow: 0 6px 16px rgba(138, 106, 47, 0.4);
+  transition: var(--transition-fast);
+}
+
+.btn-gold:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px rgba(138, 106, 47, 0.55);
+}
+
+.btn-outline {
+  padding: 10px 26px;
+  background: transparent;
+  border: 1px solid var(--gold-dark);
+  color: var(--gold-dark);
+  border-radius: 30px;
+  letter-spacing: 0.5px;
+  transition: var(--transition-fast);
+}
+
+.btn-outline:hover:not(:disabled) {
+  background: rgba(138, 106, 47, 0.1);
+  transform: translateY(-2px);
+}
+
+.btn-outline:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ============================================
+   4. HALAMAN PESAN MURID
+============================================ */
+.message-paper {
+  text-align: center;
+  /* Kita pasang transisi dasar di sini */
+  transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 1.2s ease-in-out;
+}
+
+/* --- ANIMASI KERTAS KELUAR (OUT) --- */
+.message-paper.slide-out-left {
+  transform: translateX(-150px) rotate(-3deg);
+  opacity: 0;
+}
+
+.message-paper.slide-out-right {
+  transform: translateX(150px) rotate(3deg);
+  opacity: 0;
+}
+
+/* --- ANIMASI KERTAS MASUK (IN) --- */
+/* Kita hilangkan transition: none, gantinya kita pakai trik opacity di JS nanti */
+.message-paper.slide-in-right {
+  transform: translateX(150px) rotate(3deg);
+  opacity: 0;
+}
+
+.message-paper.slide-in-left {
+  transform: translateX(-150px) rotate(-3deg);
+  opacity: 0;
+}
+
+.student-photo-wrap {
+  width: 110px;
+  height: 110px;
+  margin: 10px auto 14px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--gold);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+}
+
+.student-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.student-photo:hover {
+  transform: scale(1.03);
+}
+
+.student-name {
+  font-size: 1.4rem;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+
+.student-absen {
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  opacity: 0.75;
+  margin-bottom: 18px;
+  letter-spacing: 1px;
+}
+
+.student-message-wrap {
+  border-top: 1px solid rgba(138,106,47,0.3);
+  border-bottom: 1px solid rgba(138,106,47,0.3);
+  padding: 18px 4px;
+  margin-bottom: 18px;
+}
+
+.student-message {
+  font-size: 1.02rem;
+  line-height: 1.8;
+  font-style: italic;
+  color: var(--text-dark);
+}
+
+.progress-wrap {
+  margin-bottom: 20px;
+}
+
+.progress-count {
+  font-size: 0.95rem;
+  color: var(--gold-dark);
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.progress-hint {
+  font-size: 0.8rem;
+  color: var(--text-soft);
+  opacity: 0.65;
+  margin-top: 4px;
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+/* ============================================
+   5. FOTO KELAS + FADE TEXT - VERSI MANTAP
+============================================ */
+.class-photo-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Biar zoom gak tumpah */
+}
+
+.class-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Tambahan: Animasi zoom pelan biar dramatis */
+  animation: slowZoom 20s linear infinite alternate;
+}
+
+.class-photo-overlay {
+  position: absolute;
+  inset: 0;
+  /* Gelapin dikit lagi biar teks makin nyala */
+  background: rgba(0, 0, 0, 0.65);
+}
+
+.fade-text-container {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.fade-line {
+  position: absolute;
+  color: var(--cream);
+  font-size: clamp(1.6rem, 5vw, 2.8rem); /* Gedein dikit ukurannya */
+  font-style: italic;
+  font-weight: bold; /* Biar makin tegas */
+  letter-spacing: 1px;
+  opacity: 0;
+  max-width: 85%;
+  
+  /* Tambahan: Text Shadow Emas biar Aesthetic & Kebaca */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), 
+               0 0 15px rgba(201, 162, 75, 0.6);
+
+  /* Ganti transisi biasa jadi animasi MANTAP */
+  transition: none; 
+}
+
+/* Class yang ditempel sama JS */
+.fade-line.show {
+  animation: fancyPopIn 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Khusus Baris Hati */
+.fade-heart {
+  font-size: 3.5rem;
+  font-style: normal;
+  color: #ff4d4d; /* Merah hati */
+  text-shadow: 0 0 20px rgba(255, 77, 77, 0.8);
+}
+
+.fade-line.fade-heart.show {
+  /* Gabungin animasi muncul sama animasi denyut */
+  animation: fancyPopIn 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+             heartBeatEffect 2.5s ease-in-out infinite 1.5s; /* Mulai denyut setelah muncul */
+}
+
+/* --- KEYFRAMES BARU --- */
+
+/* 1. Animasi Zoom Foto Pelan */
+@keyframes slowZoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.15); }
+}
+
+/* 2. Animasi Muncul Teks Mantap (Fade + Slide Up + Scale) */
+@keyframes fancyPopIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 3. Animasi Denyut Hati Tulus */
+@keyframes heartBeatEffect {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.9; }
+}
+/* ============================================
+   6. CREDIT
+============================================ */
+.credit-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--brown-darker);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+.credit-scroll {
+  position: absolute;
+  top: 100%;
+  text-align: center;
+  color: var(--cream-dark);
+  animation: creditRoll 18s linear forwards;
+}
+
+.credit-title {
+  font-size: 2rem;
+  color: var(--gold-light);
+  letter-spacing: 3px;
+  margin-bottom: 30px;
+}
+
+.credit-list {
+  list-style: none;
+}
+
+.credit-list li {
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+  opacity: 0.9;
+}
+
+@keyframes creditRoll {
+  from { top: 100%; }
+  to { top: -120%; }
+}
+
+/* ============================================
+   7. PENUTUP
+============================================ */
+.closing-content {
+  text-align: center;
+  color: var(--cream-dark);
+  padding: 20px;
+  animation: fadeIn 1.4s ease;
+}
+
+.closing-text {
+  font-size: 1.3rem;
+  font-style: italic;
+  margin-bottom: 24px;
+  max-width: 480px;
+}
+
+.closing-note {
+  font-size: 1.05rem;
+  color: var(--gold-light);
+  line-height: 1.8;
+  margin-bottom: 26px;
+  max-width: 460px;
+}
+
+.closing-heart {
+  display: block;
+  font-size: 1.8rem;
+  margin-bottom: 14px;
+}
+
+.closing-class {
+  font-size: 1.6rem;
+  letter-spacing: 2px;
+  color: var(--cream);
+}
+
+.closing-year {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-bottom: 26px;
+}
+
+.final-thanks {
+  font-size: 0.95rem;
+  opacity: 0.75;
+  font-style: italic;
+  margin-bottom: 26px;
+}
+
+.replay-btn {
+  margin: 0 auto;
+}
+
+.watermark {
+  position: absolute;
+  bottom: 14px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  opacity: 0.5;
+}
+
+.watermark p {
+  font-size: 0.75rem;
+  color: var(--cream-dark);
+  letter-spacing: 0.5px;
+}
+
+.watermark-name {
+  font-weight: bold;
+  opacity: 0.9;
+}
+
+/* ============================================
+   ANIMATIONS
+============================================ */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+/* ============================================
+   RESPONSIVE
+============================================ */
+@media (max-width: 600px) {
+  .envelope {
+    width: 220px;
+    height: 150px;
+  }
+
+  .envelope-flap {
+    border-left-width: 110px;
+    border-right-width: 110px;
+    border-top-width: 76px;
+  }
+
+  .letter-inside {
+    width: 170px;
+    height: 110px;
+  }
+
+  .paper {
+    padding: 30px 22px 26px;
+  }
+
+  .student-photo-wrap {
+    width: 90px;
+    height: 90px;
+  }
+
+  .closing-text,
+  .closing-note {
+    font-size: 0.95rem;
+  }
+}
